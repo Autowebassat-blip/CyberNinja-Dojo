@@ -44,7 +44,6 @@ use v5.32;
 
 use Cwd 'abs_path';
 use Data::Dumper;
-use File::Tail;
 use Getopt::Long;
 use HTTP::Tiny;
 use IO::Socket::INET;
@@ -265,6 +264,9 @@ sub process_line {
 
 sub watch_files {
     my @log_files = @_;
+
+    eval { require File::Tail; 1 }
+        or die "File::Tail is required when watching log files\n";
 
     if (@log_files == 0) {
         # Default log locations. In v1, these were hardcoded in 4 different
